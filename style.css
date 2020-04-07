@@ -1,0 +1,11 @@
+.activated
+{
+	color: white;
+	background-color: green;
+}
+
+.deactivated
+{
+	color: white;
+	background-color: red;
+}

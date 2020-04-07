@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Online Keyboard</title>
+		<meta charset="utf-8">
+		<link rel="icon" type="image/png" href="/icon.png">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="script.js" defer></script>
+	</head>
+	<body>
+		<select onchange="switchLanguage(this.value)">
+			<option></option>
+			<option value="japanese">Japanese</option>
+			<option value="korean">Korean</option>
+		</select>
+		<!-- Cursor Issues -->
+		<input id="text" type="text" onkeydown="handleText()" oninput="changeText()" onkeyup="handlePosition()" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+		<span id="mode" class="deactivated">MODE</span>
+		<button onclick="copyText()">Copy</button>
+		<button onclick="clearText()">Clear</button>
+		<p>Copy = [CTRL][C]<br>Clear = [CTRL][BKSP]</p>
+	</body>
+</html>
