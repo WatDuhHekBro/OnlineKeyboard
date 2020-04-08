@@ -2,7 +2,7 @@ window.onerror = (error) => {
 	document.body.append(error);
 };
 
-let input = document.getElementById('text');
+let input = document.getElementById('field');
 let setting = document.getElementById('mode');
 let enter = false;
 let language = '';
@@ -90,6 +90,7 @@ function handleText()
 	}
 }
 
+// cursor issues
 function handlePosition()
 {
 	//console.log(event.target.selectionStart);

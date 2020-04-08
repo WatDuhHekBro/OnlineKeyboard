@@ -3,21 +3,32 @@
 	<head>
 		<title>Online Keyboard</title>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="icon" type="image/png" href="/icon.png">
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="script.js" defer></script>
+		<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 	</head>
 	<body>
-		<select onchange="switchLanguage(this.value)">
+		<!--<button id="guide">?</button>
+		<div id="tutorial">
+			<p>Copy = [CTRL][C]<br>Clear = [CTRL][BKSP]</p>
+		</div>-->
+		<select id="select" onchange="switchLanguage(this.value)">
 			<option></option>
 			<option value="japanese">Japanese</option>
 			<option value="korean">Korean</option>
 		</select>
-		<!-- Cursor Issues -->
-		<input id="text" type="text" onkeydown="handleText()" oninput="changeText()" onkeyup="handlePosition()" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+		<div class="main">
+			<input id="field" type="text" onkeydown="handleText()" oninput="changeText()" onkeyup="handlePosition()" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+		</div>
+		<div id="buttons">
+			<button onclick="copyText()">Copy</button>
+			<button onclick="clearText()">Clear</button>
+		</div>
 		<span id="mode" class="deactivated" style="display:none">MODE</span>
-		<button onclick="copyText()">Copy</button>
-		<button onclick="clearText()">Clear</button>
-		<p>Copy = [CTRL][C]<br>Clear = [CTRL][BKSP]</p>
 	</body>
 </html>
