@@ -14,6 +14,7 @@ let langs = {
 	korean: 'hanja'
 };
 let append = '';
+let special = false;
 
 for(let lang in langs)
 {
@@ -31,12 +32,18 @@ function handleText()
 	if(code === 'Enter' || code === 13)
 	{
 		event.preventDefault();
-		//enter = !enter;
-		//setting.className = enter ? 'activated' : 'deactivated';
 		
 		if(language === 'korean')
-			changeText({enter: input.value.length >= 2 && input.value.indexOf('y') === -1 && input.value.indexOf('w') === -1});
-		if(language === 'japanese')
+		{
+			if(special)
+				changeText({enter: input.value.length >= 2 && input.value.indexOf('y') === -1 && input.value.indexOf('w') === -1});
+			/*else
+			{
+				enter = !enter;
+				setting.className = enter ? 'activated' : 'deactivated';
+			}*/
+		}
+		else if(language === 'japanese')
 		{
 			let str = input.value;
 			
@@ -50,7 +57,7 @@ function handleText()
 	}
 	else if(code === ' ' || code === 32)
 	{
-		if(language === 'korean')
+		if(language === 'korean' && special)
 		{
 			event.preventDefault();
 			changeText({space: input.value.length >= 2 && input.value.indexOf('y') === -1 && input.value.indexOf('w') === -1});
@@ -71,6 +78,16 @@ function handleText()
 			clearText();
 		}
 	}
+	// if it's alphabetic
+	else if(event.keyCode >= 65 && event.keyCode <= 90)
+	{
+		if(language === 'korean' && !special)
+		{
+			special = true;
+			append = input.value;
+			input.value = '';
+		}
+	}
 }
 
 function handlePosition()
@@ -80,7 +97,7 @@ function handlePosition()
 
 function changeText(settings)
 {
-	if(language === 'korean')
+	if(language === 'korean' && special)
 	{
 		input.value = replaceText(input.value, primary.replace);
 		let str = input.value;
@@ -88,39 +105,42 @@ function changeText(settings)
 		let medialChar = findIndexOf(primary.medial, str[1]);
 		let finalChar = findIndexOf(primary.final, str[2]);
 		
-		if(str.length > 3 || (settings && settings.space))
-		{
-			append += String.fromCharCode((588*initialChar + 28*medialChar + Math.max(finalChar, 0)) + 44032);
-			console.log(append);
-			input.value = str.substring(3);
-			
-			// Update the indices.
-			str = input.value;
-			initialChar = findIndexOf(primary.initial, str[0]);
-			medialChar = findIndexOf(primary.medial, str[1]);
-			finalChar = findIndexOf(primary.final, str[2]);
-		}
-		else if(settings && settings.enter)
+		if(settings && settings.enter)
 		{
 			append += replaceText(String.fromCharCode((588*initialChar + 28*medialChar + Math.max(finalChar, 0)) + 44032), secondary);
-			console.log(append);
-			input.value = '';
-			
-			// Update the indices.
-			str = input.value;
-			initialChar = findIndexOf(primary.initial, str[0]);
-			medialChar = findIndexOf(primary.medial, str[1]);
-			finalChar = findIndexOf(primary.final, str[2]);
+			input.value = append;
+			special = false;
 		}
-		
-		if(findIndexOf(primary.medial, str[0]) !== -1)
-			input.value = '\u3147' + str;
-		else if(initialChar === -1 && str[0] !== 'y' && str[0] !== 'w')
-			input.value = '';
-		else if(medialChar === -1 && str[1] !== 'y' && str[1] !== 'w')
-			input.value = str.substring(0,1);
-		else if(finalChar === -1)
-			input.value = str.substring(0,2);
+		else
+		{
+			if(str.length > 3 || (settings && settings.space))
+			{
+				append += String.fromCharCode((588*initialChar + 28*medialChar + Math.max(finalChar, 0)) + 44032);
+				str = str.substring(3);
+			}
+			
+			if(str.length > 0)
+			{
+				// Update the indices.
+				initialChar = findIndexOf(primary.initial, str[0]);
+				medialChar = findIndexOf(primary.medial, str[1]);
+				finalChar = findIndexOf(primary.final, str[2]);
+				
+				if(findIndexOf(primary.medial, str[0]) !== -1)
+					input.value = '\u3147' + str;
+				else if(initialChar === -1 && str[0] !== 'y' && str[0] !== 'w')
+					input.value = '';
+				else if(medialChar === -1 && str[1] !== 'y' && str[1] !== 'w')
+					input.value = str.substring(0,1);
+				else if(finalChar === -1)
+					input.value = str.substring(0,2);
+			}
+			else
+			{
+				input.value = append;
+				special = false;
+			}
+		}
 	}
 	else
 		input.value = replaceText(input.value, primary);
@@ -164,6 +184,7 @@ function switchLanguage(lang)
 	secondary = data[langs[lang]] || {};
 	language = lang;
 	clearText();
+	//setting.style.display = language === 'korean' ? '' : 'none';
 }
 
 function findIndexOf(array, key)
