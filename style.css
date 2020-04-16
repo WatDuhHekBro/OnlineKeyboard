@@ -64,13 +64,6 @@ html, body
 
 @media all and (max-device-width: 400px), (orientation: portrait)
 {
-	html, body
-	{
-		height: 100%;
-		margin: 0;
-		background-color: gray;
-	}
-	
 	#select
 	{
 		left: 35%;

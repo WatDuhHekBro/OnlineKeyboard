@@ -45,12 +45,24 @@ function handleText()
 		}
 		else if(language === 'japanese')
 		{
-			let str = input.value;
+			/*let str = input.value;
 			
 			for(let before in secondary)
 				str = str.split("'" + before).join(secondary[before]);
 			
-			input.value = str.split("'").join('');
+			input.value = str.split("'").join('');*/
+			
+			if(enter)
+			{
+				input.value = append + replaceText(input.value, secondary, true);
+				enter = false;
+			}
+			else
+			{
+				append = input.value;
+				input.value = '';
+				enter = true;
+			}
 		}
 		else
 			input.value = replaceText(input.value, secondary);
@@ -150,10 +162,17 @@ function changeText(settings)
 	//	input.value = replaceText(input.value, secondary);
 }
 
-function replaceText(original, instructions)
+function replaceText(original, instructions, breakIfFound = false)
 {
 	for(let before in instructions)
-		original = original.split(before).join(instructions[before]);
+	{
+		let split = original.split(before);
+		original = split.join(instructions[before]);
+		
+		if(breakIfFound && split.length > 1)
+			return original;
+	}
+	
 	return original;
 }
 
