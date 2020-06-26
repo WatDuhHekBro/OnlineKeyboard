@@ -1,7 +1,4 @@
-window.onerror = (error) => {
-	document.body.append(error);
-};
-
+window.onerror = (error) => {document.body.append(error)};
 let input = document.getElementById('field');
 let setting = document.getElementById('mode');
 let enter = false;
@@ -15,6 +12,7 @@ let langs = {
 };
 let append = '';
 let special = false;
+const equals = function(c) {return value => value === c};
 
 for(let lang in langs)
 {
@@ -110,48 +108,56 @@ function handlePosition()
 
 function changeText(settings)
 {
-	if(language === 'korean' && special)
+	if(language === 'korean')
 	{
-		input.value = replaceText(input.value, primary.replace);
-		let str = input.value;
-		let initialChar = findIndexOf(primary.initial, str[0]);
-		let medialChar = findIndexOf(primary.medial, str[1]);
-		let finalChar = findIndexOf(primary.final, str[2]);
-		
-		if(settings && settings.enter)
+		if(input.value === 'ㅇ')
 		{
-			append += replaceText(String.fromCharCode((588*initialChar + 28*medialChar + Math.max(finalChar, 0)) + 44032), secondary);
 			input.value = append;
 			special = false;
 		}
-		else
+		else if(special)
 		{
-			if(str.length > 3 || (settings && settings.space))
-			{
-				append += String.fromCharCode((588*initialChar + 28*medialChar + Math.max(finalChar, 0)) + 44032);
-				str = str.substring(3);
-			}
+			input.value = replaceText(input.value, primary.replace);
+			let str = input.value;
+			let initialChar = primary.initial.findIndex(equals(str[0]));
+			let medialChar = primary.medial.findIndex(equals(str[1]));
+			let finalChar = primary.final.findIndex(equals(str[2]));
 			
-			if(str.length > 0)
+			if(settings && settings.enter)
 			{
-				// Update the indices.
-				initialChar = findIndexOf(primary.initial, str[0]);
-				medialChar = findIndexOf(primary.medial, str[1]);
-				finalChar = findIndexOf(primary.final, str[2]);
-				
-				if(findIndexOf(primary.medial, str[0]) !== -1)
-					input.value = '\u3147' + str;
-				else if(initialChar === -1 && str[0] !== 'y' && str[0] !== 'w')
-					input.value = '';
-				else if(medialChar === -1 && str[1] !== 'y' && str[1] !== 'w')
-					input.value = str.substring(0,1);
-				else if(finalChar === -1)
-					input.value = str.substring(0,2);
+				append += replaceText(String.fromCharCode((588*initialChar + 28*medialChar + Math.max(finalChar, 0)) + 44032), secondary);
+				input.value = append;
+				special = false;
 			}
 			else
 			{
-				input.value = append;
-				special = false;
+				if(str.length > 3 || (settings && settings.space))
+				{
+					append += String.fromCharCode((588*initialChar + 28*medialChar + Math.max(finalChar, 0)) + 44032);
+					str = str.substring(3);
+				}
+				
+				if(str.length > 0)
+				{
+					// Update the indices.
+					initialChar = primary.initial.findIndex(equals(str[0]));
+					medialChar = primary.medial.findIndex(equals(str[1]));
+					finalChar = primary.final.findIndex(equals(str[2]));
+					
+					if(primary.medial.findIndex(equals(str[0])) !== -1)
+						input.value = '\u3147' + str;
+					else if(initialChar === -1 && str[0] !== 'y' && str[0] !== 'w')
+						input.value = '';
+					else if(medialChar === -1 && str[1] !== 'y' && str[1] !== 'w')
+						input.value = str.substring(0,1);
+					else if(finalChar === -1)
+						input.value = str.substring(0,2);
+				}
+				else
+				{
+					input.value = append;
+					special = false;
+				}
 			}
 		}
 	}
@@ -160,6 +166,7 @@ function changeText(settings)
 	
 	//if(enter)
 	//	input.value = replaceText(input.value, secondary);
+	console.log(append);
 }
 
 function replaceText(original, instructions, breakIfFound = false)
@@ -205,20 +212,4 @@ function switchLanguage(lang)
 	language = lang;
 	clearText();
 	//setting.style.display = language === 'korean' ? '' : 'none';
-}
-
-function findIndexOf(array, key)
-{
-	let index = -1;
-	
-	for(let i = 0, len = array.length; i < len; i++)
-	{
-		if(array[i] === key)
-		{
-			index = i;
-			break;
-		}
-	}
-	
-	return index;
 }
