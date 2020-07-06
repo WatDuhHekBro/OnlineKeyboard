@@ -6,15 +6,7 @@ html, body
 	overflow: hidden;
 }
 
-#select
-{
-	position: absolute;
-	top: 15%;
-	left: 45%;
-	font-size: 3em;
-}
-
-.main
+#main
 {
 	background-color: white;
 	position: absolute;
@@ -36,6 +28,14 @@ html, body
 	max-width: 90%;
 	min-width: 75%;
 	font-family: 'Baloo Bhai 2', cursive, 'Nanum Myeongjo', serif, 'Sawarabi Mincho', sans-serif, 'Zhi Mang Xing', cursive;
+}
+
+#list
+{
+	position: absolute;
+	top: 15%;
+	left: 45%;
+	font-size: 3em;
 }
 
 #buttons
@@ -64,13 +64,7 @@ html, body
 
 @media all and (max-device-width: 400px), (orientation: portrait)
 {
-	#select
-	{
-		left: 35%;
-		font-size: 1em;
-	}
-	
-	.main
+	#main
 	{
 		top: 25%;
 		left: 5%;
@@ -80,6 +74,12 @@ html, body
 	
 	#field
 	{
+		font-size: 1em;
+	}
+	
+	#list
+	{
+		left: 35%;
 		font-size: 1em;
 	}
 	

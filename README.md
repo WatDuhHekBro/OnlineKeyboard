@@ -1,6 +1,15 @@
 # OnlineKeyboard
 The new version of Transcription.
 
+# Specifications
+- There are three events of interest for this purpose in order of execution:
+	- `keydown`: Called before the key is processed. Used to detect special characters like CTRL, as `input` can't.
+	- `input`: Called right after the key is processed. Here's where you can make your program react to changes to the text and change the cursor position, all before the user sees what happens, making for a seamless experience.
+	- `keyup`: The previous two repeats until you release the key. However, `input` covers all use cases for this program, so I don't need to use it.
+- 
+- 
+- 
+
 # Plan (paste from text file)
 ```KO store the string when entering construction mode. Spaces end construction mode, as do overflows. Enter in construction ends with hanja if found. Spaces in normal mode are just spaces. With invalid characters, either overflow (if possible) or intercept the character.
 

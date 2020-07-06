@@ -4,31 +4,22 @@
 		<title>Online Keyboard</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link rel="icon" type="image/png" href="/icon.png">
-		<link rel="stylesheet" type="text/css" href="style.css">
+		<link href="/icon.png" type="image/png" rel="icon">
+		<link href="style.css" type="text/css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
-		<script src="script.js" defer></script>
+		<script src="main.js" defer></script>
 	</head>
 	<body>
-		<!--<button id="guide">?</button>
-		<div id="tutorial">
-			<p>Copy = [CTRL][C]<br>Clear = [CTRL][BKSP]</p>
-		</div>-->
-		<select id="select" onchange="switchLanguage(this.value)">
-			<option></option>
-			<option value="japanese">日本語</option>
-			<option value="korean">한국어</option>
-		</select>
-		<div class="main">
-			<input id="field" type="text" onkeydown="handleText()" oninput="changeText()" onkeyup="handlePosition()" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+		<div id="main">
+			<input id="field" type="text" onkeydown="App.handleKeys(event)" oninput="App.handleText(this)" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+			<select id="list" onchange="App.setLanguage(this.value)"></select>
+			<div id="buttons">
+				<button onclick="App.copy()">Copy</button>
+				<button onclick="App.clear()">Clear</button>
+			</div>
 		</div>
-		<div id="buttons">
-			<button onclick="copyText()">Copy</button>
-			<button onclick="clearText()">Clear</button>
-		</div>
-		<span id="mode" class="deactivated" style="display:none">MODE</span>
 	</body>
 </html>
